@@ -11,6 +11,12 @@ var paths = {
   sass: ['./scss/**/*.scss']
 };
 
+var reportOptions = {
+  err: true,
+  stderr: true,
+  stdout: true
+};
+
 gulp.task('default', ['sass']);
 
 gulp.task('sass', function(done) {
@@ -35,6 +41,16 @@ gulp.task('install', ['git-check'], function() {
     .on('log', function(data) {
       gutil.log('bower', gutil.colors.cyan(data.id), data.message);
     });
+});
+
+gulp.task('upload', function() {
+  var ionicEmail = process.env.IONIC_EMAIL;
+  var ionicPassword = process.env.IONIC_PASSWORD;
+
+  var ionicCommand = 'ionic upload -e ' + ionicEmail + ' -p ' + ionicPassword;
+  return gulp.src('')
+    .pipe(exec(ionicCommand))
+    .pipe(exec.reporter(reportOptions))
 });
 
 gulp.task('git-check', function(done) {
